@@ -9,11 +9,12 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
-class LoginView(generics.CreateAPIView):
+class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
-    
+
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        token = serializer.validated_data # validate()의 리턴값 Token 획득
+        token_tuple = serializer.validated_data.get('token')
+        token = token_tuple[0] # Tuple 에서 토큰 객체 추출
         return Response({"token": token.key}, status=status.HTTP_200_OK)

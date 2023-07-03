@@ -2,7 +2,8 @@ from django.contrib.auth.models import User # User 모델
 from django.contrib.auth.password_validation import validate_password
 # Django의 기본 패스워드 검증 도구
 from django.contrib.auth import authenticate
-# Django의 기본 authenticte 함수, 설정한 DefaultAuthBackend인 TokenAuth 방식 유저 인증
+# Django의 기본 authenticte 함수,
+# 설정한 DefaultAuthBackend인 TokenAuth 방식 유저 인증
 
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token # Token 모델
@@ -17,11 +18,10 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         user = authenticate(**data)
         if user:
-            token = Token.objects.get(user=user)
-            return token
+            token = Token.objects.get_or_create(user=user) # get => get_or_create
+            return {"token": token} # tuple 형태로 토큰 반환
         raise serializers.ValidationError(
-            {"error": "Unable to log in with provided credentials."}
-        )
+            {"error": "Unable to log in with provided credentials."})
 
 class RegisterSerializer(serializers.ModelSerializer): # 회원 가입 시리얼라이저
     email = serializers.EmailField(
