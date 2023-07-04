@@ -13,7 +13,7 @@ from .models import Profile # model import
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ("nuckname", "position", "subjects", "image")
+        fields = ("nickname", "position", "subjects", "image")
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
