@@ -4,10 +4,16 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 # Django의 기본 authenticte 함수,
 # 설정한 DefaultAuthBackend인 TokenAuth 방식 유저 인증
-
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token # Token 모델
 from rest_framework.validators import UniqueValidator # 이메일 중복 방지 검사 도구
+
+from .models import Profile # model import
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ("nuckname", "position", "subjects", "image")
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
